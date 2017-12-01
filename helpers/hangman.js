@@ -55,18 +55,25 @@ export const checkLetter = (gameId, letter) => {
   }
 }
 
+export const getState = gameId => {
+  const { word, correctLetters } = games[gameId]
+  return word.split('').map(letter => correctLetters.indexOf(letter) === -1 ? 'blank' : letter).join(' ')
+}
+
 export const newGame = () => {
-  const gameNumber = Object.keys(games).length + 1
+  const gameId = Object.keys(games).length + 1
   const word = generateWord()
+  const game = {
+    gameId: gameId,
+    word,
+    pureWord: convertWordToPureForm(word),
+    correctLetters: [],
+    wrongLetters: [],
+  }
   games = {
     ...games,
-    [gameNumber]: {
-      word,
-      pureWord: convertWordToPureForm(word),
-      correctLetters: [],
-      wrongLetters: [],
-    }
+    [gameId]: game,
   }
 
-  return gameNumber
+  return game
 }

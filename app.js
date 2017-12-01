@@ -11,6 +11,7 @@ import {
   handleGuess,
   startNewGame,
   endGame,
+  currentState,
 } from './controllers/hangmanController'
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(async (req, res) => {
     ACTION_HANDLE_GUESS,
     ACTION_START_NEW_GAME,
     ACTION_END_GAME,
+    ACTION_CURRENT_STATE,
   } = googleHome.actions
 
   const assistant = new DialogflowApp({
@@ -37,6 +39,7 @@ app.use(async (req, res) => {
     actionMap.set(ACTION_HANDLE_GUESS, handleGuess)
     actionMap.set(ACTION_START_NEW_GAME, startNewGame)
     actionMap.set(ACTION_END_GAME, endGame)
+    actionMap.set(ACTION_CURRENT_STATE, currentState)
 
     return await assistant.handleRequest(actionMap)
   } catch (e) {

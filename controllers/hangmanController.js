@@ -1,9 +1,8 @@
 import { sendException } from './../services/sentry'
 import { googleHome } from './../config/constants'
-import { newGame, checkLetter, getWord } from './../helpers/hangman'
+import { newGame, checkLetter, getWord, getState } from './../helpers/hangman'
 
 export const handleGuess = async app => {
-
   const { parameters: { gameId } } = app.getContext('game')
   const { ARGUMENT_LETTER } = googleHome.arguments
 
@@ -35,24 +34,30 @@ export const handleGuess = async app => {
 }
 
 export const welcome = async app => {
-  const gameId = newGame()
+  const { gameId, word } = newGame()
   app.setContext('game', 10, { gameId });
-  return app.ask(`Welcome to hangman! What is your first letter?`)
+  return app.ask(`Welcome to hangman! The word has ${word.length} letters, what is your first letter?`)
 }
 
 export const startNewGame = async app => {
-  let payload = `What is your first letter?`
+  let payload = ''
   try {
     const { parameters: { gameId } } = app.getContext('game')
-    const word = getWord(gameId)
-    payload = `The word was ${word}. Starting a new game, what is your first letter?`
+    const oldWord = getWord(gameId)
+    payload = `The word was ${oldWord}. `
   } catch (_) { }
 
-  const gameId = newGame()
+  const { gameId, word } = newGame()
   app.setContext('game', 10, { gameId });
+  payload = `${payload}Starting a new game. The word has ${word.length} letters, what is your first letter?`
   return app.ask(payload)
 }
 
 export const endGame = async app => {
   return app.tell(`Ok, see you soon!`)
+}
+
+export const currentState = async app => {
+  const { parameters: { gameId } } = app.getContext('game')
+  return app.ask(getState(gameId))
 }

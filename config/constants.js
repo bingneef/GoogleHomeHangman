@@ -15,6 +15,7 @@ module.exports = {
       ACTION_HANDLE_GUESS: 'handle_guess',
       ACTION_START_NEW_GAME: 'start_new_game',
       ACTION_END_GAME: 'end_game',
+      ACTION_CURRENT_STATE: 'current_state',
     },
     arguments: {
       ARGUMENT_LETTER: 'letter',
