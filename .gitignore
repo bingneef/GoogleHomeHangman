@@ -1,0 +1,9 @@
+# shared files
+.env
+app.json
+
+# deploy
+tmp
+
+# develop
+node_modules
